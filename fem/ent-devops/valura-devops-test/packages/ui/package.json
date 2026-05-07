@@ -1,0 +1,80 @@
+{
+  "name": "@repo/ui",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist/**",
+    "dist"
+  ],
+  "exports": {
+    "./styles.css": "./dist/index.css",
+    "./counter-button": {
+      "import": {
+        "types": "./dist/es/counter-button.d.mts",
+        "default": "./dist/es/counter-button.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/counter-button.d.ts",
+        "default": "./dist/cjs/counter-button.js"
+      }
+    },
+    "./link": {
+      "import": {
+        "types": "./dist/es/link.d.mts",
+        "default": "./dist/es/link.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/link.d.ts",
+        "default": "./dist/cjs/link.js"
+      }
+    },
+    "./button": {
+      "import": {
+        "types": "./dist/es/button.d.mts",
+        "default": "./dist/es/button.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/button.d.ts",
+        "default": "./dist/cjs/button.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "pnpm run build:styles && pnpm run build:components",
+    "build:styles": "tailwindcss -i ./styles.css -o ./dist/index.css",
+    "build:components": "bunchee",
+    "dev": "pnpm run dev:styles & pnpm run dev:components",
+    "dev:styles": "tailwindcss -i ./styles.css -o ./dist/index.css --watch",
+    "dev:components": "bunchee --watch",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "@repo/jest-presets/browser"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/jest-presets": "workspace:*",
+    "@repo/tailwind-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@tailwindcss/cli": "^4.1.5",
+    "@types/node": "^22.15.3",
+    "bunchee": "^6.4.0",
+    "eslint": "^9.28.0",
+    "jest": "^29.7.0",
+    "tailwindcss": "^4.1.5",
+    "typescript": "5.8.2"
+  },
+  "peerDependencies": {
+    "@types/react": ">=18",
+    "@types/react-dom": ">=18",
+    "react": ">=18",
+    "react-dom": ">=18"
+  }
+}

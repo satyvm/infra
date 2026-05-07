@@ -1,0 +1,16 @@
+@import "@repo/tailwind-config";
+@import "@repo/ui/styles.css";
+
+/* Custom app-specific styles can go here */
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1.5;
+  tab-size: 4;
+}
+
+body {
+  margin: 0;
+}
