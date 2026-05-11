@@ -1,6 +1,7 @@
 # three node (two workers) cluster config
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
+name: kube-1
 nodes:
   - role: control-plane
   - role: worker

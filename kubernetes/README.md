@@ -4,5 +4,6 @@
 2. [Course Github](https://github.com/sidpalas/devops-directive-kubernetes-course)
 
 
-DevBox (Beginner friendly Nix Manager)
-KinD - Local Kubs using Docker for Development 
+1. DevBox (Beginner friendly Nix Manager)
+2. KinD - Local Kubs using Docker for Development (Kubernetes IN Docker)
+3. GKE - Google Kubernetes Engine

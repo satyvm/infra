@@ -1,0 +1,34 @@
+1. gcloud init
+2. gcloud config set project project-9
+3. gcloud services list --enabled
+4. gcloud services enable \
+          compute.googleapis.com \
+          container.googleapis.com \
+          cloudresourcemanager.googleapis.com \
+          iam.googleapis.com \
+          secretmanager.googleapis.com \
+          servicemanagement.googleapis.com \
+          serviceusage.googleapis.com
+5. gcloud config set compute/region us-east1
+6. gcloud config set compute/zone us-east1-b
+7. gcloud compute networks create learn-kubs --subnet-mode=custom
+8. gcloud compute networks subnets create subnet-1 \
+          --network=learn-kubs \
+          --region=us-east1 \
+          --range=10.0.0.0/20
+9. gcloud container clusters create learn-gke-1 \
+          --zone us-east1-b \
+          --network learn-kubs \
+          --subnetwork subnet-1 \
+          --machine-type e2-standard-2 \
+          --num-nodes 2 \
+          --gateway-api=standard \
+          --workload-pool=project-96345559-d949-4b8c-91b.svc.id.goog
+10. kubectx
+11. kubectl get nodes
+12, kubectl get pods -A
+
+Clean up
+13. gcloud container clusters delete learn-gke-1 --zone=us-east1-b --quiet
+14. gcloud compute networks subnets delete subnet-1 --region=us-east1 --quiet
+15. gcloud compute networks delete learn-kubs --quiet

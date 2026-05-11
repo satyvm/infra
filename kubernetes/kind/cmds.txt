@@ -1,2 +1,8 @@
+devbox shell
+
 1. REPLACE_WITH_ABSOLUTE_PATH=${PWD} envsubst < kind-config.yaml.TEMPLATE > kind-config.yaml
-2. 
+2. kind create cluster --config ./kind-config.yaml
+3. kind get clusters
+4. kubectl config view
+5. kind delete cluster
+6. kubectx

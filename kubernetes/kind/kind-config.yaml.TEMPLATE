@@ -2,6 +2,7 @@
 # REPLACE_WITH_ABSOLUTE_PATH=${PWD} envsubst < kind-config.yaml.TEMPLATE > kind-config.yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
+name: kube-1
 nodes:
   - role: control-plane
   - role: worker
