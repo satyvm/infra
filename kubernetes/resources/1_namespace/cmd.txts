@@ -1,0 +1,7 @@
+kubectl create namespace namespace-cli
+kubectl apply -f namespace.yaml
+
+kubectl get ns
+
+kubectl delete namespace namespace-cli
+kubectl delete -f namespace.yaml

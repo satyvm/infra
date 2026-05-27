@@ -1,0 +1,10 @@
+1. kubectl get pods
+2. kubens
+3. kubectl run --image=nginx:1.26.0 created-the-wrong-way
+4. kubectl apply -n namespace-files -f pod.nginx-minimal.yaml
+5. kubectl port-foward -n namespace-files -f nginx-minimal 8080:80
+6. kubectl apply -f pod.nginx-better.yaml
+7. kubectl port-forward nginx-better 8080:8080
+
+Deleting the namespace recursively deletes the resources inside of it!
+8. kubectl delete -f namespace.yaml
