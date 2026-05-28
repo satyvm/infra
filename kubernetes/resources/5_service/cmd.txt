@@ -1,0 +1,14 @@
+1. kubectl apply -f service.namespace.yaml
+2. kubens 05--service
+3. kubectl apply all one by one, deployment, clusterip, nodeport, and loadbalancer.
+    nodeport we might need to open ports on that node's firewall.
+4. kubectl get svc 
+    or kubectl get service
+6. kubectl run tmp-shell --rm -i --tty --image nicolaka/netshoot
+     and run things like curl http://nginx-clusterip, etc.
+
+# This enters the kind "node" and uses crictl, the tool Kubernetes uses to manage containers internally
+docker exec -it kind-control-plane crictl images
+
+# get public ip
+curl ifconfig.me

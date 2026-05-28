@@ -1,0 +1,6 @@
+1. kubectl get deployments.apps 
+2. kubectl apply -f deployment.nginx.yaml 
+or in place of rollout, you can use apply after changing configs.
+3. kubectl rollout restart deployment nginx-better
+4. watch "kubectl get pods"
+5. kubectl rollout undo deployment nginx-better
