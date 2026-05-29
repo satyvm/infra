@@ -1,0 +1,2 @@
+officially, supports layer 7 routing but some implementation allows layer 4.
+
