@@ -1,0 +1,11 @@
+1. kubectl apply -f resources/6_job
+applies all the files under this folder.
+
+2. kubectl get jobs.batch
+3. kubectl logs x
+4. kubectl explain job.spec.backoffLimit
+
+cronjobs
+https://crontab.guru/ to understand crons, * * * * * means every minute.
+
+5. kubectl create job --from=cronjob/echo-date-better manually-triggered

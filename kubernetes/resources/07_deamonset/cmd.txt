@@ -1,0 +1,2 @@
+1. kubectl get daemonsets
+2. kubectl get pods -o wide

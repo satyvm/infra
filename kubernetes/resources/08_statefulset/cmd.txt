@@ -1,0 +1,7 @@
+kubectl apply -f resources/08_statefulset
+
+# uses loadbalancer service
+kubectl port-forward svc/nginx 8080:80
+
+# connect to particular pod
+kubectl port-forward nginx-with-init-conainer-1 8080:80

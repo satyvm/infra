@@ -1,0 +1,4 @@
+kubectl apply -f resources/09_configmap
+kubectl get cm
+kubectl exec configmap-example -c nginx -- cat /etc/config/conf.yml
+kubectl exec configmap-example -c nginx -- printenv
