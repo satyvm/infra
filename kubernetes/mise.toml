@@ -1,0 +1,27 @@
+[tools]
+# Core runtimes
+node = "20"
+python = "3.12"
+poetry = "latest"
+go = "latest"
+
+kubectl = "latest"
+helm = "latest"
+kustomize = "latest"
+kind = "latest"
+k9s = "latest"
+tilt = "latest"
+ko = "latest"
+kubectx = "latest"
+gcloud = "latest"
+jq = "latest"
+yq = "latest"
+act = "latest"
+
+[env]
+GOBIN = "{{config_root}}/bin"
+PATH = "{{config_root}}/bin:{{env.PATH}}"
+
+[tasks.bootstrap]
+description = "Initialize tools & dependencies"
+run = "go install sigs.k8s.io/cloud-provider-kind@v0.2.0"
