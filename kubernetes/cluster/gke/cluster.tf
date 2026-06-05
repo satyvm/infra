@@ -8,25 +8,32 @@ terraform {
 }
 
 provider "google" {
-  project = "project-96345559-d949-4b8c-91b"
-  region  = "us-central1"
+  project = var.project_id
+  region  = var.region
+}
+
+# Enable the Container API
+resource "google_project_service" "container" {
+  service                    = "container.googleapis.com"
+  disable_dependent_services = false
+  disable_on_destroy         = false
 }
 
 resource "google_compute_network" "default" {
-  name = "learn-network"
+  name = "${var.cluster_name}-network"
 
   auto_create_subnetworks  = false
   enable_ula_internal_ipv6 = true
 }
 
 resource "google_compute_subnetwork" "default" {
-  name = "learn-subnetwork"
+  name = "${var.cluster_name}-subnetwork"
 
   ip_cidr_range = "10.0.0.0/16"
-  region        = "us-central1"
+  region        = var.region
 
   stack_type       = "IPV4_IPV6"
-  ipv6_access_type = "EXTERNAL" # Change to "EXTERNAL" if creating an external loadbalancer
+  ipv6_access_type = "EXTERNAL"
 
   network = google_compute_network.default.id
   secondary_ip_range {
@@ -41,9 +48,9 @@ resource "google_compute_subnetwork" "default" {
 }
 
 resource "google_container_cluster" "default" {
-  name = "learn-standard-cluster"
+  name = var.cluster_name
 
-  location                 = "us-central1-b"
+  location                 = var.zone
   enable_l4_ilb_subsetting = true
   remove_default_node_pool = true
   initial_node_count = 1
@@ -62,14 +69,14 @@ resource "google_container_cluster" "default" {
     channel = "CHANNEL_STANDARD"
   }
   workload_identity_config {
-    workload_pool = "project-96345559-d949-4b8c-91b.svc.id.goog"
+    workload_pool = "${var.project_id}.svc.id.goog"
   }
   deletion_protection = false
 }
 
 resource "google_container_node_pool" "default_spot_nodes" {
-  name       = "learn-node-pool"
-  location   = "us-central1-b"
+  name       = "${var.cluster_name}-node-pool"
+  location   = var.zone
   cluster    = google_container_cluster.default.name
   node_count = 2
 

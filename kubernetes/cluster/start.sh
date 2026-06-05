@@ -26,22 +26,25 @@ case "$user_input" in
         elif ! command -v terraform &> /dev/null; then
             echo "terraform is not installed"
             exit 1
-        elif [ -z "$(gcloud config get-value account)" ]; then
-            echo "please login to gcloud using: gcloud auth login"
+        elif ! gcloud auth application-default print-access-token &>/dev/null; then
+            echo "Please login to Application Default Credentials using: gcloud auth application-default login"
+            exit 1
+        elif [ -f "./config.env" ]; then
+            source ./config.env
+        else
+            echo "Error: config.env file not found."
             exit 1
         fi
-        USER_IDENTIFIER=$(gcloud config get-value account)
-        PROJECT_ID="${PROJECT_ID:-project-96345559-d949-4b8c-91b}"
-        gcloud config set project $PROJECT_ID
-        gcloud services enable container.googleapis.com
-        for ROLE in "roles/container.admin" "roles/compute.networkAdmin" "roles/iam.serviceAccountUser"; do
-            gcloud projects add-iam-policy-binding $PROJECT_ID --member="user:$USER_IDENTIFIER" --role=$ROLE
-        done
+        [ -n "${PROJECT_ID:-}" ] && export TF_VAR_project_id="$PROJECT_ID"
+        [ -n "${REGION:-}" ] && export TF_VAR_region="$REGION"
+        [ -n "${ZONE:-}" ] && export TF_VAR_zone="$ZONE"
+        [ -n "${CLUSTER_NAME:-}" ] && export TF_VAR_cluster_name="$CLUSTER_NAME"
         (
             cd gke
             terraform init
             terraform plan
             terraform apply
+            gcloud container clusters get-credentials "$CLUSTER_NAME" --zone "$ZONE" --project "$PROJECT_ID"
             echo "to delete run: terraform destroy"
         )
         ;;
