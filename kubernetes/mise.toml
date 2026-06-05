@@ -1,5 +1,5 @@
 [tools]
-go = "1.22"
+go = "1.26"
 kubectl = "latest"
 helm = "latest"
 kustomize = "latest"
@@ -16,9 +16,13 @@ act = "latest"
 gcloud = "latest"
 
 [env]
-GOBIN = "{{config_root}}/bin"
-PATH = "{{config_root}}/bin:{{env.PATH}}"
+GOBIN = "{{config_root}}/go/bin"
+GOPATH = "{{config_root}}/go"
+_.path = ["{{config_root}}/go/bin"]
 
 [tasks.bootstrap]
-description = "Initialize tools & dependencies"
-run = "go install sigs.k8s.io/cloud-provider-kind@v0.2.0"
+description = "Initialize tools & dependencies" 
+run = [
+    "go install sigs.k8s.io/cloud-provider-kind@v0.2.0",
+    "gcloud components install gke-gcloud-auth-plugin"
+]
