@@ -1,2 +1,28 @@
 officially, supports layer 7 routing but some implementation allows layer 4.
 
+kubectl apply -f resources/1_namespace/universal.namespace.yaml
+kubens universal-namespace
+
+kubectl apply -f resources/11_ingress/deployment.yaml
+
+# use k9s to track everything
+
+kubectl apply -f resources/11_ingress/svc.nginx-nodeport.yaml
+kubectl apply -f resources/11_ingress/ingress.minimal-gke.yaml
+
+# domain conf - we will need to update /etc/hosts to route to our ip, for local testing.
+
+# if we dont want to use gke's ingress, we can install nginx's ingress which is open source into the cluster.
+helm upgrade --install ingress-nginx ingress-nginx \
+          --repo https://kubernetes.github.io/ingress-nginx \
+          --namespace ingress-nginx \
+          --create-namespace \
+          --version 4.10.1
+
+kubectl apply -f resources/11_ingress/svc.nginx-clusterip.yaml
+kubectl apply -f resources/11_ingress/ingress.minimal-nginx.yaml
+
+# again domain conf
+
+kubectl delete -f resources/1_namespace/universal.namespace.yaml
+kubectl delete namespace ingress-nginx

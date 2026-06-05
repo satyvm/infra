@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-nodeport
+spec:
+  # as GKE spins up a external load balancer (which is not in the cluster)
+  # LB needs a service to talk to each Node, and GKE connects them both
+  # as we are using target-type: instance. but we can also use target-type: ip, 
+  # where ip addr are assigned to each pods
+  type: NodePort
+  selector:
+    app: nginx-pod-label
+  ports:
+    - protocol: TCP
+      port: 80 # Port the service is listening on
+      targetPort: 80 # Port the container is listening on (if unset, defaults to equal port value)
