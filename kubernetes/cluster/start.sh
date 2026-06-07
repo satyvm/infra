@@ -17,7 +17,7 @@ case "$user_input" in
             exit 1
         fi
         kind create cluster --config=./kind/kind-config.yaml
-        echo "to delete run: kind delete cluster"
+        echo "to delete run: kind delete cluster -n local-dev"
     ;;
     g|gke)
         if ! command -v gcloud &> /dev/null; then
@@ -46,7 +46,11 @@ case "$user_input" in
             gcloud container clusters get-credentials "$CLUSTER_NAME" --zone "$ZONE" --project "$PROJECT_ID"
             echo "to delete run: ./start.sh -dg"
         )
-        ;;
+    ;;
+    dk|delete-kind)
+        kind delete cluster -n local-dev
+        echo "deleted kind cluster"
+    ;;
     dg|delete-gke)
         if [ ! -f "./config.env" ]; then
             echo "Error: config.env file not found."
