@@ -1,0 +1,41 @@
+kubectl apply -f resources/1_namespace/universal.namespace.yaml
+kubens universal-namespace
+
+kubectl apply -f resources/12_gateway_api/deployment.yaml
+
+# core gke gateway implementation
+kubectl apply -f resources/12_gateway_api/svc.nodeport.yaml
+kubectl apply -f resources/12_gateway_api/httproute.gke.yaml
+kubectl apply -f resources/12_gateway_api/gateway.gke.yaml
+
+# third part gateway implementation - kong
+helm upgrade --install kong ingress \
+          --repo https://charts.konghq.com \
+          -n kong \
+          --create-namespace \
+          --version 0.12.0
+to check 
+    kubectl get pods -n kong
+    kubectl get svc -n kong
+    helm status kong -n kong
+
+my takes on helm, https://charts.konghq.com/#kongingress
+    helm repo add kong https://charts.konghq.com
+    helm repo update #if repos are outdated
+    # update to latest version
+    helm upgrade --install kong ingress \
+        --repo https://charts.konghq.com \
+        -n kong 
+    helm list -n kong
+
+# Kong requires the latest CRDs
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/experimental-install.yaml
+# i believe using Helm already created required CRDs
+
+kubectl apply -f resources/12_gateway_api/svc.clusterip.yaml
+kubectl apply -f resources/12_gateway_api/gatewayclass.kong.yaml
+kubectl apply -f resources/12_gateway_api/gateway.kong.yaml
+kubectl apply -f resources/12_gateway_api/httproute.kong.yaml
+
+To enable TCPRoutes, some additional configuration is required.
+    See: https://docs.konghq.com/kubernetes-ingress-controller/3.1.x/guides/services/tcp/"
