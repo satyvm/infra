@@ -1,0 +1,3 @@
+
+# gke
+kubectl apply -f resources/13_persistantvolume/gke/statefulset.individual-pvcs-gke.yaml

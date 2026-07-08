@@ -63,7 +63,7 @@ case "$user_input" in
         [ -n "${CLUSTER_NAME:-}" ] && export TF_VAR_cluster_name="$CLUSTER_NAME"
         (
             cd gke
-            kubectl config delete-context gke_"$PROJECT_ID"_" $ZONE"_" $CLUSTER_NAME"
+            kubectl config delete-context gke_"$PROJECT_ID"_"$ZONE"_"$CLUSTER_NAME"
             terraform destroy
         )
         ;;
