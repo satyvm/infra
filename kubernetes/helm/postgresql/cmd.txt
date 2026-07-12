@@ -1,0 +1,46 @@
+kubectl apply -f resources/1_namespace/universal.namespace.yaml
+kubens universal-namespace
+
+# Add Bitnami Helm repository
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+helm search repo bitnami/postgresql --versions
+
+Login to OCI registry
+helm registry login registry-1.docker.io
+
+List tags in the OCI registry
+oras repo tags registry-1.docker.io/bitnamicharts/postgresql
+
+Pull the charts locally
+helm pull bitnami/postgresql --version=18.7.12
+tar -xzf postgresql-18.7.12.tgz
+helm show values bitnami/postgresql --version=18.7.12
+
+helm install postgresql bitnami/postgresql \
+          --version=18.7.12 \
+          --create-namespace \
+          --values=values.yaml
+
+helm upgrade --install postgresql bitnami/postgresql \
+          --version=18.7.13 \
+          --create-namespace \
+          --values=values.yaml
+
+kubectl get svc,secrets
+NAME                                      TYPE                 DATA   AGE
+secret/postgresql                         Opaque               1      10h
+secret/sh.helm.release.v1.postgresql.v1   helm.sh/release.v1   1      10h
+secret/sh.helm.release.v1.postgresql.v2   helm.sh/release.v1   1      2m45s  <- this is the new upgraded base-64 encoded manifest
+
+Connect to postgreql ->
+export POSTGRES_PASSWORD=$(kubectl get secret --namespace universal-namespace postgresql -o jsonpath="{.data.postgres-password}" | base64 -d)
+kubectl run postgresql-client --rm --tty -i --restart='Never' --namespace universal-namespace --image registry-1.docker.io/bitnami/postgresql:latest --env="PGPASSWORD=$POSTGRES_PASSWORD" --command -- psql --host postgresql -U postgres -d postgres -p 5432
+
+helm ls -> to get current versions
+helm rollback postgresql
+
+helm get values postgresql
+helm get manifest postgresql
+
+helm uninstall postgresql
